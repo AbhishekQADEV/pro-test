@@ -1,53 +1,68 @@
-#include<stdio.h>
-#include<time.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// function to merge the sub-arrays
-void merge(int a[],int low,int mid ,int high)
-{
-	int b[20]; //same size of a[]
-	int i, j, k;
-	i = low, j = mid + 1,k = low;
-	while(i <= mid && j <= high)
-	{
-		if(a[i]<=a[j])
-		    b[k++]=a[i++];
-		else
-		   b[k++]=a[j++]; //copying the elements 
-	}
-	while (i<=mid)
-		b[k++]=a[i++];
-	while 
-		(j<=high) b[k++]=a[j++];
-		for (k=low;k<=high;k++)
-	        a[k]=b[k];
+struct BST {
+    int data;
+    struct BST* left;
+    struct BST* right;
+};
+
+struct BST* CreateNode() {
+    struct BST* new = (struct BST*)malloc(sizeof(struct BST));
+    new->left = NULL;
+    new->right = NULL;
+    return new;
 }
 
-// merge sort function
-void mergesort(int a[],int low,int high)
-{
-	int mid;
-	if(low>=high)
-	  return;
-	mid=(low+high)/2;
-	mergesort(a,low,mid);
-	mergesort(a,mid+1,high);
-	merge(a,low,mid,high);
+void Insert(struct BST** RootPtr, int value) {
+    struct BST* temp = *RootPtr;
+    if (temp == NULL) {
+        /*When list is empty*/
+        struct BST* NewNode = CreateNode();
+        NewNode->data = value;
+        *RootPtr = NewNode;
+    } else if (value <= temp->data) {
+        /*If user value is less then current node value insert in left of the node...*/
+        struct BST* NewNode = CreateNode();
+        NewNode->data = value;
+        temp->left = NewNode;
+    } else {
+        /*If user value is greater then current node value insert at right of the node*/
+        struct BST* NewNode = CreateNode();
+        NewNode->data = value;
+        temp->right = NewNode;
+    }
 }
 
-// main fucntion
-int main()
-{
-	int a[7] = {83, 20, 9, 50, 115, 61, 17};
-	int n = 7;
+int Search(struct BST* RootPtr, int item) {
+    /*Implemented search using recursion*/
+    if (RootPtr == NULL) {
+        return 0; /*Returns 0 if list is empty*/
+    } else if (item == RootPtr->data) {
+        return 1; /*Returns 1 when element found*/
+    } else if (item < RootPtr->data) {
+        return Search(RootPtr->left, item); /*Otherwise search in left side of binary tree if searching value is less then the current node value*/
+    } else {
+        return Search(RootPtr->right, item); /*Otherwise search in right side of binary tree if searching value is greater then the current node value*/
+    }
+}
 
-	mergesort(a, 0, n-1);
-	
-	printf("\n Sorted numbers are: ");
-
-	// function to print the sorted array
-	int k;
-	for(k = 0; k < 7; k++)
-	    printf("%d, ",a[k]);
-	return 0;
+int main() {
+    struct BST* RootPtr = NULL;
+    int item, cont, key;
+    do {
+        printf("Enter item: ");
+        scanf("%d", &item);
+        Insert(&RootPtr, item);
+        printf("\n1 to keep inserting/ 0 to Exit: ");
+        scanf("%d", &cont);
+    } while (cont == 1);
+    printf("\nEnter element to search: ");
+    scanf("%d", &key);
+    if (Search(RootPtr, key) == 0) {
+        printf("\nFound\n");
+    } else {
+        printf("\nNot Found\n");
+    }
+    return 0;
 }

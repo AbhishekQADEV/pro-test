@@ -1,19 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
-    int *unsorted[] = {5, 6, 4, 3, 9};
-    int *sorted[5];
-    do
+    int unsorted[] = {5, 6, 4, 3, 9};
+    int sorted[5];
+    int a = 0;
+    int b = 0;
+    
+    for (int i = 0; i < sizeof(unsorted) / sizeof(unsorted[0]); i++)
     {
-        int a = 0;
-        a++;
-        int b = 0;
-        b++;
-        
-        if(unsorted[a] < unsorted[b])
+        if (unsorted[i] < unsorted[b])
         {
-            sorted[a] = unsorted[a];
+            sorted[a] = unsorted[i];
+            a++;
         }
-    } while(sizeof(sorted) != sizeof(unsorted));
+    }
+    
+    return 0;
 }

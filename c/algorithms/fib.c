@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -8,7 +9,7 @@ int main()
     for(a = 0, b = 1; b > a; b++)
     {
         a++;
-        printf("%ld \n %ld", &a, &b);
+        printf("%ld \n %ld", a, b);
     }
     
     if(b == sizeof(long))
